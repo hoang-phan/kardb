@@ -1,0 +1,6 @@
+%nav.navbar.navbar-default
+  %span.app-name SONGS
+- @songs.each do |song|
+  = render 'form', song: song
+  %br
+= render 'form', song: Song.new
