@@ -16,3 +16,4 @@
 # Ignore application configuration
 /config/application.yml
 *.mp3
+kardb.sql

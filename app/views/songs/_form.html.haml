@@ -1,0 +1,24 @@
+= form_for song do |f|
+  .row.clearfix
+    .col-sm-2
+      = f.label :name
+      = f.text_field :name
+    .col-sm-2
+      = f.label :author
+      = f.text_field :author
+    .col-sm-2
+      = f.label :singer
+      = f.text_field :singer
+    .col-sm-2
+      = f.label :file_name
+      = f.text_field :file_name
+    .col-sm-2
+      = f.label :beat_link
+      = f.text_field :beat_link, disabled: true
+    .col-sm-2
+      %br
+      - if song.persisted?
+        = f.submit 'Update', class: 'btn btn-grey'
+        = link_to 'Upload', upload_song_path(song), method: :post, class: 'btn'
+      - else
+        = f.submit 'Add', class: 'btn btn-primary'
