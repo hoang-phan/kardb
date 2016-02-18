@@ -1,5 +1,6 @@
 %nav.navbar.navbar-default
   %span.app-name SONGS
+  = link_to 'Pull beats', pull_songs_path, method: :post, class: 'btn btn-large pull-right'
 - @songs.each do |song|
   = render 'form', song: song
   %br
