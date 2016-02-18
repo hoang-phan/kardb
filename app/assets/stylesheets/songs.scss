@@ -1,3 +1,30 @@
 .app-name {
   font-size: 34px;
 }
+
+button {
+  background: none;
+  border: 0;
+}
+
+textarea.form-control {
+  resize: none;
+  height: 500px;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+audio {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.edit-lyric {
+  display: none;
+}
