@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     member do
       post :upload
     end
+    collection do
+      post :pull
+    end
   end
   resources :words, only: :update
 end

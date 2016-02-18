@@ -1,6 +1,11 @@
 class SongsController < ApplicationController
   before_action :set_song, only: [:update, :show]
 
+  def pull
+    SongsPuller.perform_async
+    redirect_to :back
+  end
+
   def index
     @songs = Song.all
   end
