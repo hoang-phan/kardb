@@ -2,6 +2,8 @@ class Song < ActiveRecord::Base
   belongs_to :patch
   has_many :lines
 
+  DEFAULT_WORD_DURATION = 300
+
   before_save :build_lines
 
   def upload
@@ -16,13 +18,16 @@ class Song < ActiveRecord::Base
     if lyric_changed?
       Line.where(song: self).delete_all
 
+      processed_at = DEFAULT_WORD_DURATION
+
       lyric.split(/\r\n|\n/).each do |str_line|
         line = Line.create(song: self)
 
         words = []
 
         str_line.split(/[+.,?!\-: ]+/).each do |str_word|
-          words << Word.new(content: str_word, note: 0, duration: 0, processed_at: 0, line: line)
+          processed_at += DEFAULT_WORD_DURATION
+          words << Word.new(content: str_word, note: 0, duration: DEFAULT_WORD_DURATION, processed_at: processed_at, line: line)
         end
 
         Word.import(words)
