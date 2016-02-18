@@ -1,28 +1,27 @@
 class SongsController < ApplicationController
-  before_action :set_song, only: [:update, :destroy, :upload]
+  before_action :set_song, only: [:update, :show]
 
   def index
     @songs = Song.all
   end
 
+  def show
+
+  end
+
   def create
     Song.create(song_params)
-    redirect_to songs_path, notice: 'Created'
+    redirect_to :back, notice: 'Created'
   end
 
   def update
     @song.update(song_params)
-    redirect_to songs_path, notice: 'Updated'
-  end
-
-  def destroy
-    @song.delete
-    redirect_to songs_path, notice: 'Deleted'
+    redirect_to :back, notice: 'Updated'
   end
 
   def upload
-    @song.upload
-    redirect_to songs_path, notice: 'Uploaded'
+    SongUploader.perform_async(params[:id])
+    redirect_to :back, notice: 'Uploaded'
   end
 
   private
@@ -32,6 +31,6 @@ class SongsController < ApplicationController
   end
 
   def song_params
-    params.require(:song).permit(:name, :author, :singer, :file_name)
+    params.require(:song).permit(:name, :author, :singer, :file_name, :lyric)
   end
 end

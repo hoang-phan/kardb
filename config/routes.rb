@@ -4,4 +4,5 @@ Rails.application.routes.draw do
       post :upload
     end
   end
+  resources :words, only: :update
 end

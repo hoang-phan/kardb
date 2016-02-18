@@ -1,0 +1,23 @@
+= audio_tag @song.file_name, preload: "auto", controls: true
+.row.clearfix.text-center= link_to 'Edit lyric', '#', class: 'btn btn-grey edit-lyric-link'
+
+.row.clearfix.edit-lyric
+  = form_for @song do |f|
+    .col-sm-11
+      = f.label :lyric
+      = f.text_area :lyric, class: 'form-control'
+    .col-sm-1
+      = f.submit 'Update', class: 'btn btn-primary bottom'
+
+- @song.lines.includes(:words).each do |line|
+  .row.clearfix
+    - line.words.each do |word|
+      .col-sm-2
+        = form_for word do |wf|
+          %p= word.content
+          %p
+            %span= wf.text_field :processed_at
+            %span= wf.text_field :duration
+            %span= wf.text_field :note
+
+= javascript_include_tag :song_details

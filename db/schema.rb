@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217064858) do
+ActiveRecord::Schema.define(version: 20160218061803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "lines", force: :cascade do |t|
+    t.integer  "song_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "lines", ["song_id"], name: "index_lines_on_song_id", using: :btree
 
   create_table "patches", force: :cascade do |t|
     t.integer  "version"
@@ -34,10 +42,27 @@ ActiveRecord::Schema.define(version: 20160217064858) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "file_name"
+    t.string   "lyric"
   end
 
   add_index "songs", ["file_name"], name: "index_songs_on_file_name", using: :btree
   add_index "songs", ["patch_id"], name: "index_songs_on_patch_id", using: :btree
 
+  create_table "words", force: :cascade do |t|
+    t.string   "content"
+    t.integer  "note"
+    t.integer  "duration"
+    t.integer  "processed_at"
+    t.integer  "line_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "words", ["line_id"], name: "index_words_on_line_id", using: :btree
+  add_index "words", ["note"], name: "index_words_on_note", using: :btree
+  add_index "words", ["processed_at"], name: "index_words_on_processed_at", using: :btree
+
+  add_foreign_key "lines", "songs", on_delete: :cascade
   add_foreign_key "songs", "patches", on_delete: :cascade
+  add_foreign_key "words", "lines", on_delete: :cascade
 end
