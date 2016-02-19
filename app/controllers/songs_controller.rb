@@ -11,7 +11,7 @@ class SongsController < ApplicationController
   end
 
   def show
-
+    @lines = @song.lines.includes(:words)
   end
 
   def create

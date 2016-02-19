@@ -22,9 +22,16 @@ textarea.form-control {
 
 audio {
   width: 100%;
-  margin-top: 15px;
 }
 
 .edit-lyric {
   display: none;
+}
+
+.lyric-show {
+  width: 70%;
+  padding: 10px;
+  margin: auto;
+  font-size: 30px;
+  font-weight: 600;
 }

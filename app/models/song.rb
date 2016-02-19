@@ -34,4 +34,10 @@ class Song < ActiveRecord::Base
       end
     end
   end
+
+  def display_lines
+    lines.includes(:words).map do |line|
+      line.words.map(&:content).join(' ')
+    end
+  end
 end
