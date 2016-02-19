@@ -16,9 +16,9 @@
         = form_for word, remote: true do |wf|
           %p= word.content
           %p
-            %span= wf.text_field :processed_at, class: 'form-control'
-            %span= wf.text_field :duration, class: 'form-control'
-            %span= wf.text_field :note, class: 'form-control'
+            %span= wf.number_field :processed_at, class: 'form-control'
+            %span= wf.number_field :duration, class: 'form-control'
+            %span= wf.number_field :note, class: 'form-control'
 = link_to 'Update Lyric', '#', class: 'btn btn-primary update-lyric'
 
 = javascript_include_tag :song_details
