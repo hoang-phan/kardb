@@ -13,11 +13,12 @@
   .row.clearfix
     - line.words.each do |word|
       .col-sm-2
-        = form_for word do |wf|
+        = form_for word, remote: true do |wf|
           %p= word.content
           %p
-            %span= wf.text_field :processed_at
-            %span= wf.text_field :duration
-            %span= wf.text_field :note
+            %span= wf.text_field :processed_at, class: 'form-control'
+            %span= wf.text_field :duration, class: 'form-control'
+            %span= wf.text_field :note, class: 'form-control'
+= link_to 'Update Lyric', '#', class: 'btn btn-primary update-lyric'
 
 = javascript_include_tag :song_details

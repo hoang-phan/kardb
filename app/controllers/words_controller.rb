@@ -3,7 +3,6 @@ class WordsController < ApplicationController
 
   def update
     @word.update(word_params)
-    redirect_to :back
   end
 
   private
