@@ -1,3 +1,10 @@
+.row.clearfix.text-center
+  .lyric-show
+    .scrollable
+      - @lines.each_with_index do |line, index|
+        %p
+          - line.words.each do |word|
+            %span{ data: { time: word.processed_at, duration: word.duration, pos: index } }= word.content
 = audio_tag @song.file_name, preload: "auto", controls: true
 .row.clearfix.text-center= link_to 'Edit lyric', '#', class: 'btn btn-grey edit-lyric-link'
 
@@ -9,7 +16,7 @@
     .col-sm-1
       = f.submit 'Update', class: 'btn btn-primary bottom'
 
-- @song.lines.includes(:words).each do |line|
+- @lines.each do |line|
   .row.clearfix
     - line.words.each do |word|
       .col-sm-2
