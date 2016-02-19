@@ -2,7 +2,9 @@ $wordProcessedAts = $("[name='word[processed_at]']")
 $wordDurations = $("[name='word[duration]']")
 $editLyric = $('.edit-lyric')
 $wordForms = $('form.edit_word')
-$words = $('.lyric-show span')
+$lyricShow = $('.lyric-show')
+$scrollable = $lyricShow.find('.scrollable')
+$words = $lyricShow.find('span')
 $audio = $('audio')
 prevProcessedAt = 0
 prevDuration = 0
@@ -19,10 +21,10 @@ updateSpan = (time) ->
     $el = $(el)
     processed = parseInt($el.data('time'))
     duration = parseInt($el.data('duration'))
-    if time > processed
-      $el.css('color', '#c00')
-    else
-      $el.css('color', '#000')
+    $el.toggleClass('red', time >= processed)
+  $lastRed = $lyricShow.find('span.red:last')
+  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
+  $scrollable.css('margin-top', '-' + marginTop + 'px')
 
 $('.edit-lyric-link').on 'click', (e) ->
   $editLyric.toggle()

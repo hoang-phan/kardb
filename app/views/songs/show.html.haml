@@ -1,9 +1,10 @@
 .row.clearfix.text-center
   .lyric-show
-    - @lines.each do |line|
-      %p
-        - line.words.each do |word|
-          %span{ data: { time: word.processed_at, duration: word.duration } }= word.content
+    .scrollable
+      - @lines.each_with_index do |line, index|
+        %p
+          - line.words.each do |word|
+            %span{ data: { time: word.processed_at, duration: word.duration, pos: index } }= word.content
 = audio_tag @song.file_name, preload: "auto", controls: true
 .row.clearfix.text-center= link_to 'Edit lyric', '#', class: 'btn btn-grey edit-lyric-link'
 
