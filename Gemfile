@@ -14,6 +14,7 @@ gem 'haml-rails'
 gem 'bootstrap-sass'
 gem 'sidekiq'
 gem 'activerecord-import'
+gem 'waveform'
 
 group :development, :test do
   gem 'byebug'

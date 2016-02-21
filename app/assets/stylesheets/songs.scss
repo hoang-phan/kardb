@@ -37,3 +37,26 @@ audio {
   height: 115px;
   overflow: hidden;
 }
+
+.lyric-lines {
+  height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.full-width {
+  width: 100%;
+}
+  
+.relative {
+  position: relative;
+}
+
+.cursor {
+  height: 100%;
+  width: 0;
+  border-left: 1px solid red;  
+  position: absolute;
+  top: 0;
+  left: 0;
+}

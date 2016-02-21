@@ -1,11 +1,11 @@
 $wordProcessedAts = $("[name='word[processed_at]']")
 $wordDurations = $("[name='word[duration]']")
 $editLyric = $('.edit-lyric')
-$wordForms = $('form.edit_word')
 $lyricShow = $('.lyric-show')
 $scrollable = $lyricShow.find('.scrollable')
 $words = $lyricShow.find('span')
 $audio = $('audio')
+$cursor = $('.cursor')
 prevProcessedAt = 0
 prevDuration = 0
 
@@ -13,17 +13,23 @@ changeSubsequentProcessedAt = (changed, index) ->
   $.each $wordProcessedAts, (i, el) ->
     if i > index
       $el = $(el)
-      $el.val(parseInt($el.val()) + changed)
+      prev = parseInt($el.val())
+      current = prev + changed
+      $span = $lyricShow.find("[data-time=#{prev}]")
+      $span.attr('data-time', current)
+      $span.data('time', current)
+      $el.val(current)
+      $el.closest('form.edit_word').attr('dirty', 1)
 
 updateSpan = (time) ->
-  console.log(time)
+  $cursor.css('left', "#{time / $audio[0].duration / 10}%")
   $.each $words, (i, el) ->
     $el = $(el)
     processed = parseInt($el.data('time'))
     duration = parseInt($el.data('duration'))
     $el.toggleClass('red', time >= processed)
   $lastRed = $lyricShow.find('span.red:last')
-  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
+  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 53 else 0
   $scrollable.css('margin-top', '-' + marginTop + 'px')
 
 $('.edit-lyric-link').on 'click', (e) ->
@@ -31,7 +37,7 @@ $('.edit-lyric-link').on 'click', (e) ->
   false
 
 $('.update-lyric').on 'click', (e) ->
-  $wordForms.submit()
+  $('form.edit_word[dirty=1]').submit()
   false
 
 $wordProcessedAts.on 'focusin', (e) ->
@@ -41,12 +47,22 @@ $wordDurations.on 'focusin', (e) ->
   prevDuration = parseInt($(this).val())
 
 $wordProcessedAts.on 'change', (e) ->
-  current = parseInt($(this).val())
+  $this = $(this)
+  $this.closest('form').attr('dirty', 1)
+  current = parseInt($this.val())
+  $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
+  $span.attr('data-time', current)
+  $span.data('time', current)
   changeSubsequentProcessedAt(current - prevProcessedAt, $wordProcessedAts.index(@))
   prevProcessedAt = current
 
 $wordDurations.on 'change', (e) ->
-  current = parseInt($(this).val())
+  $this = $(this)
+  $this.closest('form').attr('dirty', 1)
+  current = parseInt($this.val())
+  $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
+  $span.attr('data-duration', current)
+  $span.data('duration', current)
   changeSubsequentProcessedAt(current - prevDuration, $wordDurations.index(@))
   prevDuration = current
 
