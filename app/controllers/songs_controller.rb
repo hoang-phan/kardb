@@ -29,6 +29,11 @@ class SongsController < ApplicationController
     redirect_to :back, notice: 'Uploaded'
   end
 
+  def generate_waveform
+    WaveformConverter.perform_async(params[:id])
+    redirect_to :back, notice: 'Generated'
+  end
+  
   private
 
   def set_song

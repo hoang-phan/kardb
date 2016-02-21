@@ -6,8 +6,12 @@
           - line.words.each do |word|
             %span{ data: { time: word.processed_at, duration: word.duration, pos: index } }= word.content
 = audio_tag @song.file_name, preload: "auto", controls: true
+.row.clearfix.text-center.relative
+  = image_tag @song.waveform_file, class: 'full-width'
+  .cursor
+.row.clearfix.text-center
+  = link_to 'Generate Waveform Image', generate_waveform_song_path(@song), method: :post, class: 'btn btn-grey'
 .row.clearfix.text-center= link_to 'Edit lyric', '#', class: 'btn btn-grey edit-lyric-link'
-
 .row.clearfix.edit-lyric
   = form_for @song do |f|
     .col-sm-11
@@ -16,16 +20,17 @@
     .col-sm-1
       = f.submit 'Update', class: 'btn btn-primary bottom'
 
-- @lines.each do |line|
-  .row.clearfix
-    - line.words.each do |word|
-      .col-sm-2
-        = form_for word, remote: true do |wf|
-          %p= word.content
-          %p
-            %span= wf.number_field :processed_at, class: 'form-control'
-            %span= wf.number_field :duration, class: 'form-control'
-            %span= wf.number_field :note, class: 'form-control'
+.lyric-lines
+  - @lines.each do |line|
+    .row.clearfix
+      - line.words.each do |word|
+        .col-sm-2
+          = form_for word, remote: true do |wf|
+            %p= word.content
+            %p
+              %span= wf.number_field :processed_at, class: 'form-control'
+              %span= wf.number_field :duration, class: 'form-control'
+              %span= wf.number_field :note, class: 'form-control'
 = link_to 'Update Lyric', '#', class: 'btn btn-primary update-lyric'
 
 = javascript_include_tag :song_details
