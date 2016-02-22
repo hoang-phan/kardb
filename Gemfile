@@ -15,6 +15,7 @@ gem 'bootstrap-sass'
 gem 'sidekiq'
 gem 'activerecord-import'
 gem 'waveform'
+gem "mini_magick"
 
 group :development, :test do
   gem 'byebug'

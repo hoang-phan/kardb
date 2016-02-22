@@ -33,7 +33,7 @@ class SongsController < ApplicationController
     WaveformConverter.perform_async(params[:id])
     redirect_to :back, notice: 'Generated'
   end
-  
+
   private
 
   def set_song
@@ -41,6 +41,6 @@ class SongsController < ApplicationController
   end
 
   def song_params
-    params.require(:song).permit(:name, :author, :singer, :file_name, :lyric)
+    params.require(:song).permit(:name, :author, :singer, :file_name, :lyric, :singer_wav)
   end
 end

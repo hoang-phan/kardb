@@ -2,10 +2,14 @@ $wordProcessedAts = $("[name='word[processed_at]']")
 $wordDurations = $("[name='word[duration]']")
 $editLyric = $('.edit-lyric')
 $lyricShow = $('.lyric-show')
+$toggleAudio = $('.toggle-audio')
+$beatContainer = $('.beat-container')
+$songContainer = $('.song-container')
 $scrollable = $lyricShow.find('.scrollable')
 $words = $lyricShow.find('span')
 $audio = $('audio')
 $cursor = $('.cursor')
+audioIndex = 0
 prevProcessedAt = 0
 prevDuration = 0
 
@@ -22,18 +26,31 @@ changeSubsequentProcessedAt = (changed, index) ->
       $el.closest('form.edit_word').attr('dirty', 1)
 
 updateSpan = (time) ->
-  $cursor.css('left', "#{time / $audio[0].duration / 10}%")
+  $cursor.css('top', "#{time / $audio[audioIndex].duration / 10}%")
   $.each $words, (i, el) ->
     $el = $(el)
     processed = parseInt($el.data('time'))
     duration = parseInt($el.data('duration'))
     $el.toggleClass('red', time >= processed)
   $lastRed = $lyricShow.find('span.red:last')
-  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 53 else 0
+  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
   $scrollable.css('margin-top', '-' + marginTop + 'px')
 
 $('.edit-lyric-link').on 'click', (e) ->
   $editLyric.toggle()
+  false
+
+$toggleAudio.on 'click', (e) ->
+  if $beatContainer.is(':visible')
+    $beatContainer.hide()
+    $songContainer.show()
+    $toggleAudio.text('Beat')
+    audioIndex = 1
+  else
+    $songContainer.hide()
+    $beatContainer.show()
+    $toggleAudio.text('Original song')
+    audioIndex = 0
   false
 
 $('.update-lyric').on 'click', (e) ->
@@ -67,4 +84,4 @@ $wordDurations.on 'change', (e) ->
   prevDuration = current
 
 $audio.on 'timeupdate', (e) ->
-  updateSpan($audio[0].currentTime * 1000)
+  updateSpan($audio[audioIndex].currentTime * 1000)

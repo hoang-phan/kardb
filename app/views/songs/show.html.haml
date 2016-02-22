@@ -1,3 +1,6 @@
+%nav.navbar.navbar-default
+  %span.app-name= @song.name
+  = link_to 'Original song', '#', class: 'btn pull-right toggle-audio'
 .row.clearfix.text-center
   .lyric-show
     .scrollable
@@ -5,20 +8,33 @@
         %p
           - line.words.each do |word|
             %span{ data: { time: word.processed_at, duration: word.duration, pos: index } }= word.content
-= audio_tag @song.file_name, preload: "auto", controls: true
-.row.clearfix.text-center.relative
-  = image_tag @song.waveform_file, class: 'full-width'
-  .cursor
+.beat-container
+  = audio_tag @song.file_name, preload: "auto", controls: true, class: 'beat-container'
+  .row.clearfix.text-center.relative
+    = image_tag @song.waveform_file, class: 'full-width'
+    .cursor
+.song-container
+  = audio_tag @song.singer_wav, preload: "auto", controls: true, class: 'beat-container'
+  .row.clearfix.text-center.relative
+    = image_tag @song.wave_form_singer
+    .cursor
 .row.clearfix.text-center
   = link_to 'Generate Waveform Image', generate_waveform_song_path(@song), method: :post, class: 'btn btn-grey'
-.row.clearfix.text-center= link_to 'Edit lyric', '#', class: 'btn btn-grey edit-lyric-link'
-.row.clearfix.edit-lyric
-  = form_for @song do |f|
-    .col-sm-11
-      = f.label :lyric
-      = f.text_area :lyric, class: 'form-control'
-    .col-sm-1
+.row.clearfix.text-center= link_to 'Edit song', '#', class: 'btn btn-grey edit-lyric-link'
+= form_for @song do |f|
+  .edit-lyric
+    .row.clearfix
+      .col-sm-11
+        = f.label :lyric
+        = f.text_area :lyric, class: 'form-control'
+  .row.clearfix
+    .col-sm-12
+      = f.label :singer_wav
+      = f.text_field :singer_wav, class: 'form-control'
+  .row.clearfix
+    .col-sm-12
       = f.submit 'Update', class: 'btn btn-primary bottom'
+%br
 
 .lyric-lines
   - @lines.each do |line|
