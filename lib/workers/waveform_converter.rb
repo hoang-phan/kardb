@@ -9,7 +9,21 @@ class WaveformConverter
     FileUtils.rm path
     Waveform.generate(tempname, path)
     FileUtils.rm tempname
+    image = MiniMagick::Image.open(path)
+    image.rotate(-90)
+    image.write(path)
     song.update(waveform_file: "#{id}.png")
+
+    tempname = "public/audios/#{id}_singer.wav"
+    path = "public/images/#{id}_singer.png"
+    system %Q{ffmpeg -y -i "public/audios/#{song.singer_wav}" -f wav "#{tempname}" > /dev/null 2>&1}
+    FileUtils.rm_rf path
+    Waveform.generate(tempname, path)
+    FileUtils.rm tempname
+    image = MiniMagick::Image.open(path)
+    image.rotate(-90)
+    image.write(path)
+    song.update(wave_form_singer: "#{id}_singer.png")
   rescue Exception => e
     p e
   end

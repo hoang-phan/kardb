@@ -47,16 +47,20 @@ audio {
 .full-width {
   width: 100%;
 }
-  
+
 .relative {
   position: relative;
 }
 
 .cursor {
-  height: 100%;
-  width: 0;
-  border-left: 1px solid red;  
+  height: 0;
+  width: 100%;
+  border-top: 1px solid red;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.song-container {
+  display: none;
 }
