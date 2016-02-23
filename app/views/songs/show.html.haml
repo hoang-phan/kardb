@@ -1,6 +1,8 @@
 %nav.navbar.navbar-default
   %span.app-name= @song.name
   = link_to 'Original song', '#', class: 'btn pull-right toggle-audio'
+  = link_to 'Generate Waveform Image', generate_waveform_song_path(@song), method: :post, class: 'btn pull-right'
+  = link_to 'Edit song', '#', class: 'btn btn-grey edit-lyric-link'
 .row.clearfix.text-center
   .lyric-show
     .scrollable
@@ -8,19 +10,27 @@
         %p
           - line.words.each do |word|
             %span{ data: { time: word.processed_at, duration: word.duration, pos: index } }= word.content
-.beat-container
-  = audio_tag @song.file_name, preload: "auto", controls: true, class: 'beat-container'
-  .row.clearfix.text-center.relative
-    = image_tag @song.waveform_file, class: 'full-width'
+= audio_tag @song.file_name, preload: "auto", controls: true, class: 'beat-container'
+= audio_tag @song.singer_wav, preload: "auto", controls: true, class: 'song-container'
+
+.row.clearfix
+  .col-sm-5.relative.no-padding
+    .beat-container
+      = image_tag @song.waveform_file, class: 'full-width'
+    .song-container
+      = image_tag @song.wave_form_singer
     .cursor
-.song-container
-  = audio_tag @song.singer_wav, preload: "auto", controls: true, class: 'beat-container'
-  .row.clearfix.text-center.relative
-    = image_tag @song.wave_form_singer
-    .cursor
+  .col-sm-7
+    - @lines.each do |line|
+      - line.words.each do |word|
+        = form_for word, remote: true do |wf|
+          %p.word-form
+            %span.word-content= word.content
+            %span= wf.number_field :processed_at, class: 'small-field'
+            %span= wf.number_field :duration, class: 'tiny-field'
+            %span= wf.number_field :note, class: 'tiny-field'
+  
 .row.clearfix.text-center
-  = link_to 'Generate Waveform Image', generate_waveform_song_path(@song), method: :post, class: 'btn btn-grey'
-.row.clearfix.text-center= link_to 'Edit song', '#', class: 'btn btn-grey edit-lyric-link'
 = form_for @song do |f|
   .edit-lyric
     .row.clearfix
@@ -34,19 +44,7 @@
   .row.clearfix
     .col-sm-12
       = f.submit 'Update', class: 'btn btn-primary bottom'
-%br
 
-.lyric-lines
-  - @lines.each do |line|
-    .row.clearfix
-      - line.words.each do |word|
-        .col-sm-2
-          = form_for word, remote: true do |wf|
-            %p= word.content
-            %p
-              %span= wf.number_field :processed_at, class: 'form-control'
-              %span= wf.number_field :duration, class: 'form-control'
-              %span= wf.number_field :note, class: 'form-control'
 = link_to 'Update Lyric', '#', class: 'btn btn-primary update-lyric'
 
 = javascript_include_tag :song_details

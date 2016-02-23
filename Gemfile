@@ -16,6 +16,7 @@ gem 'sidekiq'
 gem 'activerecord-import'
 gem 'waveform'
 gem "mini_magick"
+gem 'jquery-ui-rails'
 
 group :development, :test do
   gem 'byebug'

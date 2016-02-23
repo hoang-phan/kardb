@@ -38,12 +38,6 @@ audio {
   overflow: hidden;
 }
 
-.lyric-lines {
-  height: 280px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .full-width {
   width: 100%;
 }
@@ -63,4 +57,24 @@ audio {
 
 .song-container {
   display: none;
+}
+
+span.word-content {
+  display: inline-block;
+  width: 100px;
+}
+
+p.word-form {
+  padding: 10px;
+  background: #ccc;
+}
+
+input {
+  &.small-field {
+    width: 100px;
+  }
+
+  &.tiny-field {
+    width: 50px;
+  }
 }

@@ -57,6 +57,9 @@ $('.update-lyric').on 'click', (e) ->
   $('form.edit_word[dirty=1]').submit()
   false
 
+$('p.word-form').draggable
+  axis: 'y'
+
 $wordProcessedAts.on 'focusin', (e) ->
   prevProcessedAt = parseInt($(this).val())
 
