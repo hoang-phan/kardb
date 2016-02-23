@@ -12,6 +12,12 @@ $cursor = $('.cursor')
 audioIndex = 0
 prevProcessedAt = 0
 prevDuration = 0
+initTopOffset = []
+
+$('audio:first').on 'loadeddata', (e) ->
+  $.each $('p.word-form'), (i, el) ->
+    $el = $(el)
+    $el.css('top', "#{parseInt($el.find('[name="word[processed_at]"]').val()) / $audio[0].duration / 10}%")
 
 changeSubsequentProcessedAt = (changed, index) ->
   $.each $wordProcessedAts, (i, el) ->
@@ -23,7 +29,7 @@ changeSubsequentProcessedAt = (changed, index) ->
       $span.attr('data-time', current)
       $span.data('time', current)
       $el.val(current)
-      $el.closest('form.edit_word').attr('dirty', 1)
+      $el.closest('p.word-form').css('top', "#{current / $audio[audioIndex].duration / 10}%")
 
 updateSpan = (time) ->
   $cursor.css('top', "#{time / $audio[audioIndex].duration / 10}%")
@@ -36,6 +42,19 @@ updateSpan = (time) ->
   marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
   $scrollable.css('margin-top', '-' + marginTop + 'px')
 
+$('p.word-form').draggable
+  axis: 'y'
+  start: (e, ui) ->
+    prevProcessedAt = parseInt($(this).find('[name="word[processed_at]"]').val())
+  stop: (e, ui) ->
+    $this = $(this)
+    top = $this.position().top
+    $wordProcessed = $this.find('[name="word[processed_at]"]')
+    $wordProcessed.val(current = Math.round(top * $audio[audioIndex].duration / 2500) * 50)
+    $this.css('top', "#{current / $audio[audioIndex].duration / 10}%")
+    unless e.shiftKey
+      changeSubsequentProcessedAt(current - prevProcessedAt, $wordProcessedAts.index($wordProcessed))
+
 $('.edit-lyric-link').on 'click', (e) ->
   $editLyric.toggle()
   false
@@ -43,7 +62,7 @@ $('.edit-lyric-link').on 'click', (e) ->
 $toggleAudio.on 'click', (e) ->
   if $beatContainer.is(':visible')
     $beatContainer.hide()
-    $songContainer.show()
+    $songContainer.css('display', 'inline-block')
     $toggleAudio.text('Beat')
     audioIndex = 1
   else
@@ -54,11 +73,8 @@ $toggleAudio.on 'click', (e) ->
   false
 
 $('.update-lyric').on 'click', (e) ->
-  $('form.edit_word[dirty=1]').submit()
+  $('form.edit_word').submit()
   false
-
-$('p.word-form').draggable
-  axis: 'y'
 
 $wordProcessedAts.on 'focusin', (e) ->
   prevProcessedAt = parseInt($(this).val())
@@ -68,8 +84,8 @@ $wordDurations.on 'focusin', (e) ->
 
 $wordProcessedAts.on 'change', (e) ->
   $this = $(this)
-  $this.closest('form').attr('dirty', 1)
   current = parseInt($this.val())
+  $this.closest('p.word-form').css('top', "#{current / $audio[audioIndex].duration / 10}%")
   $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
   $span.attr('data-time', current)
   $span.data('time', current)
@@ -78,7 +94,6 @@ $wordProcessedAts.on 'change', (e) ->
 
 $wordDurations.on 'change', (e) ->
   $this = $(this)
-  $this.closest('form').attr('dirty', 1)
   current = parseInt($this.val())
   $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
   $span.attr('data-duration', current)
