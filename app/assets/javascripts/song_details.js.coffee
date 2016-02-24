@@ -9,7 +9,8 @@ $scrollable = $lyricShow.find('.scrollable')
 $words = $lyricShow.find('span')
 $audio = $('audio')
 $cursor = $('.cursor')
-$imgs = $('.viewport img')
+$viewport = $('.viewport')
+$imgs = $viewport.find('img')
 audioIndex = 0
 prevProcessedAt = 0
 prevDuration = 0
@@ -40,7 +41,7 @@ updateSpan = (time) ->
     duration = parseInt($el.data('duration'))
     $el.toggleClass('red', time >= processed)
   $lastRed = $lyricShow.find('span.red:last')
-  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52.8 else 0
+  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
   $scrollable.css('margin-top', '-' + marginTop + 'px')
 
 $('p.word-form').draggable
@@ -109,3 +110,8 @@ $imgs.on 'click', (e) ->
   y = e.offsetY
   $cursor.css('top', y + 'px')
   $audio[audioIndex].currentTime = y * $audio[audioIndex].duration / 50000
+
+$lyricShow.on 'click', (e) ->
+  $viewport.animate
+      scrollTop: $cursor.position().top
+    ,1000
