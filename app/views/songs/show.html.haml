@@ -27,7 +27,7 @@
         - line.words.each do |word|
           = form_for word, remote: true do |wf|
             %p.word-form
-              %span.word-content= word.content
+              %span= wf.text_field :content, class: 'small-field'
               %span= wf.number_field :processed_at, class: 'small-field'
               %span= wf.number_field :duration, class: 'tiny-field'
               %span= wf.number_field :note, class: 'tiny-field'

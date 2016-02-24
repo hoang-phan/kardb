@@ -12,6 +12,6 @@ class WordsController < ApplicationController
   end
 
   def word_params
-    params.require(:word).permit(:note, :duration, :processed_at)
+    params.require(:word).permit(:content, :note, :duration, :processed_at)
   end
 end

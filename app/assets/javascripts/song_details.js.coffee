@@ -39,7 +39,7 @@ updateSpan = (time) ->
     duration = parseInt($el.data('duration'))
     $el.toggleClass('red', time >= processed)
   $lastRed = $lyricShow.find('span.red:last')
-  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52 else 0
+  marginTop = if $lastRed.length > 0 then parseInt($lastRed.data('pos')) * 52.8 else 0
   $scrollable.css('margin-top', '-' + marginTop + 'px')
 
 $('p.word-form').draggable
