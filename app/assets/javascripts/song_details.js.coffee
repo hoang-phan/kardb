@@ -9,6 +9,7 @@ $scrollable = $lyricShow.find('.scrollable')
 $words = $lyricShow.find('span')
 $audio = $('audio')
 $cursor = $('.cursor')
+$imgs = $('.viewport img')
 audioIndex = 0
 prevProcessedAt = 0
 prevDuration = 0
@@ -103,3 +104,8 @@ $wordDurations.on 'change', (e) ->
 
 $audio.on 'timeupdate', (e) ->
   updateSpan($audio[audioIndex].currentTime * 1000)
+
+$imgs.on 'click', (e) ->
+  y = e.offsetY
+  $cursor.css('top', y + 'px')
+  $audio[audioIndex].currentTime = y * $audio[audioIndex].duration / 50000
