@@ -17,4 +17,4 @@
 /config/application.yml
 /public/audios
 /public/images
-kardb.sql
+/*.sql
