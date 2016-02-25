@@ -6,9 +6,9 @@ class WaveformConverter
     tempname = "public/audios/#{id}.wav"
     path = "public/images/#{id}.png"
     system %Q{ffmpeg -y -i "public/audios/#{song.file_name}" -f wav "#{tempname}" > /dev/null 2>&1}
-    FileUtils.rm path
+    FileUtils.rm_rf path
     Waveform.generate(tempname, path, width: 18000)
-    FileUtils.rm tempname
+    FileUtils.rm_rf tempname
     image = MiniMagick::Image.open(path)
     image.rotate(90)
     image.write(path)
