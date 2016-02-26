@@ -1,5 +1,5 @@
 %nav.navbar.navbar-default.padding-10
-  %span.app-name= @song.name
+  %span.app-name= link_to @song.name, songs_path
   = link_to 'Original song', '#', class: 'btn btn-default pull-right toggle-audio'
   = link_to 'Generate Waveform Image', generate_waveform_song_path(@song), method: :post, class: 'btn btn-default pull-right'
   = link_to 'Edit song', '#', class: 'btn btn-default edit-lyric-link pull-right'

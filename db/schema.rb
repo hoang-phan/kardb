@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222062906) do
+ActiveRecord::Schema.define(version: 20160225023709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "lines", force: :cascade do |t|
     t.integer  "song_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "position",   default: 0
   end
 
   add_index "lines", ["song_id"], name: "index_lines_on_song_id", using: :btree
