@@ -16,12 +16,14 @@ class Song < ActiveRecord::Base
 
   def build_lines
     if lyric_changed?
-      Line.where(song: self).delete_all
+      processed_at = Word.where(line: Line.where(song: self)).maximum(:processed_at).to_i
 
-      processed_at = DEFAULT_WORD_DURATION
+      lines_count = lines.count
+      new_lines = lyric.split(/\r\n|\n/)
 
-      lyric.split(/\r\n|\n/).each do |str_line|
-        line = Line.create(song: self)
+      new_lines.each_with_index do |str_line, index|
+        next if index < lines_count
+        line = Line.create(song: self, position: index)
 
         words = []
 
@@ -32,6 +34,8 @@ class Song < ActiveRecord::Base
 
         Word.import(words)
       end
+
+      lines.where('position >= ?', new_lines.count).delete_all
     end
   end
 end
