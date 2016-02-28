@@ -24,14 +24,24 @@ class LyricUploader
       end
     end
 
+    begin
+      $client.file_delete("/#{lines_file_name}")
+    rescue
+      p 'File is ready'
+    end
+
+    begin
+      $client.file_delete("/#{words_file_name}")
+    rescue
+      p 'File is ready'
+    end
+
     $client.put_file("/#{lines_file_name}", open(lines_file_name))
-    response = $session.do_get "/shares/auto/#{$client.format_path('/' + lines_file_name)}", {"short_url"=>false}
-    result = Dropbox::parse_response(response)
+    result = $client.shares("/#{lines_file_name}", false)
     song.update(lyric_link: result['url'].gsub('?dl=0', '?dl=1'))
 
     $client.put_file("/#{words_file_name}", open(words_file_name))
-    response = $session.do_get "/shares/auto/#{$client.format_path('/' + words_file_name)}", {"short_url"=>false}
-    result = Dropbox::parse_response(response)
+    result = $client.shares("/#{words_file_name}", false)
     song.update(words_link: result['url'].gsub('?dl=0', '?dl=1'))
   rescue Exception => e
     p e

@@ -11,7 +11,13 @@ class PatchesUploader
       end
     end
 
+    begin
+      $client.file_delete("/#{file_name}")
+    rescue
+      p 'File is ready'
+    end
     $client.put_file("/#{file_name}", open(file_name))
+    $client.shares "/#{file_name}"
   rescue Exception => e
     p e
   end
