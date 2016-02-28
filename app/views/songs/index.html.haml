@@ -1,6 +1,8 @@
 %nav.navbar.navbar-default
   %span.app-name SONGS
-  = link_to 'Pull beats', pull_songs_path, method: :post, class: 'btn btn-large pull-right'
+  = link_to 'Pull beats', pull_songs_path, method: :post, class: 'btn btn-primary pull-right'
+  = link_to 'Create patch', patches_path, method: :post, class: 'btn btn-default pull-right'
+  = link_to 'Upload patches', upload_all_patches_path, method: :post, class: 'btn btn-default pull-right'
 - @songs.each do |song|
   = render 'form', song: song
   %br

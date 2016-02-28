@@ -7,10 +7,16 @@ class Song < ActiveRecord::Base
   before_save :build_lines
 
   def upload
-    file = "#{id}.mp3"
-    $client.put_file("/#{file}", open("public/audios/" + file_name))
-    response = $session.do_get "/shares/auto/#{$client.format_path('/' + file)}", {"short_url"=>false}
-    result = Dropbox::parse_response(response)
+    file = "/#{id}.mp3"
+    
+    begin
+      $client.file_delete(file)
+    rescue
+      p 'File is ready'
+    end
+
+    $client.put_file(file, open("public/audios/" + file_name))
+    result = $client.shares(file, false)
     update(beat_link: result['url'].gsub('?dl=0', '?dl=1'))
   end
 

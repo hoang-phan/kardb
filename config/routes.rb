@@ -9,4 +9,9 @@ Rails.application.routes.draw do
     end
   end
   resources :words, only: :update
+  resources :patches, only: :create do
+    collection do
+      post :upload_all
+    end
+  end
 end

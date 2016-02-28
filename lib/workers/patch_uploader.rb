@@ -9,13 +9,18 @@ class PatchUploader
     CSV.open(file_name = "patch_#{patch.version}.csv", "w") do |w|
       w << %w(name author singer beat_link lyric_link words_link)
       patch.songs.each do |song|
-        w << [song.name, song.author, song.singer, song.beat_link, song.lyric_link, songs.words_link]
+        w << [song.name, song.author, song.singer, song.beat_link, song.lyric_link, song.words_link]
       end
     end
 
+    begin
+      $client.file_delete("/#{file_name}")
+    rescue
+      p 'File is ready'
+    end
+
     $client.put_file("/#{file_name}", open(file_name))
-    response = $session.do_get "/shares/auto/#{$client.format_path('/' + file_name)}", {"short_url"=>false}
-    result = Dropbox::parse_response(response)
+    result = $client.shares "/#{file_name}", false
     patch.update(link: result['url'].gsub('?dl=0', '?dl=1'))
   rescue Exception => e
     p e
