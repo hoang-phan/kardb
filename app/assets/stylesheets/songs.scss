@@ -93,3 +93,10 @@ input {
 .padding-10 {
   padding: 10px;
 }
+
+.duration {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.1);
+  width: calc(100% - 30px);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
