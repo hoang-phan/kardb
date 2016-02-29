@@ -19,7 +19,13 @@ initTopOffset = []
 $('audio:first').on 'loadeddata', (e) ->
   $.each $('p.word-form'), (i, el) ->
     $el = $(el)
-    $el.css('top', "#{parseInt($el.find('[name="word[processed_at]"]').val()) / $audio[0].duration / 10}%")
+    duration = $audio[0].duration * 10
+    topPercent = parseInt($el.find('[name="word[processed_at]"]').val()) / duration
+    durationPercent = parseInt($el.find('[name="word[duration]"]').val()) / duration
+    $el.css('top', "#{topPercent}%")
+    id = $el.find('[name="word[id]"]').val()
+    $durationSpan = $viewport.find("[data-id=#{id}]")
+    $durationSpan.css('top', "#{topPercent / 100 * 50000}px").css('height', "#{durationPercent / 100 * 50000}px")
 
 changeSubsequentProcessedAt = (changed, index) ->
   $.each $wordProcessedAts, (i, el) ->
@@ -31,7 +37,11 @@ changeSubsequentProcessedAt = (changed, index) ->
       $span.attr('data-time', current)
       $span.data('time', current)
       $el.val(current)
-      $el.closest('p.word-form').css('top', "#{current / $audio[audioIndex].duration / 10}%")
+      $form = $el.closest('p.word-form')
+      id = $form.find('[name="word[id]"]').val()
+      topPercent = current / $audio[audioIndex].duration / 10
+      $form.css('top', "#{current / $audio[audioIndex].duration / 10}%")
+      $viewport.find("[data-id=#{id}]").css('top', "#{topPercent / 100 * 50000}px")
 
 updateSpan = (time) ->
   $cursor.css('top', "#{time / $audio[audioIndex].duration / 10}%")
@@ -53,7 +63,10 @@ $('p.word-form').draggable
     top = $this.position().top
     $wordProcessed = $this.find('[name="word[processed_at]"]')
     $wordProcessed.val(current = Math.round(top * $audio[audioIndex].duration / 2500) * 50)
-    $this.css('top', "#{current / $audio[audioIndex].duration / 10}%")
+    topPercent = current / $audio[audioIndex].duration / 10
+    id = $this.find('[name="word[id]"]').val()
+    $viewport.find("[data-id=#{id}]").css('top', "#{topPercent / 100 * 50000}px")
+    $this.css('top', "#{topPercent}%")
     unless e.shiftKey
       changeSubsequentProcessedAt(current - prevProcessedAt, $wordProcessedAts.index($wordProcessed))
 
@@ -87,7 +100,11 @@ $wordDurations.on 'focusin', (e) ->
 $wordProcessedAts.on 'change', (e) ->
   $this = $(this)
   current = parseInt($this.val())
-  $this.closest('p.word-form').css('top', "#{current / $audio[audioIndex].duration / 10}%")
+  $form = $this.closest('p.word-form')
+  topPercent = current / $audio[audioIndex].duration / 10
+  $form.css('top', "#{topPercent}%")
+  id = $form.find('[name="word[id]"]').val()
+  $viewport.find("[data-id=#{id}]").css('top', "#{topPercent / 100 * 50000}px")
   $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
   $span.attr('data-time', current)
   $span.data('time', current)
@@ -97,6 +114,10 @@ $wordProcessedAts.on 'change', (e) ->
 $wordDurations.on 'change', (e) ->
   $this = $(this)
   current = parseInt($this.val())
+  $form = $this.closest('p.word-form')
+  durationPercent = current / $audio[audioIndex].duration / 10
+  id = $form.find('[name="word[id]"]').val()
+  $viewport.find("[data-id=#{id}]").css('height', "#{durationPercent / 100 * 50000}px")
   $span = $lyricShow.find("[data-time=#{prevProcessedAt}]")
   $span.attr('data-duration', current)
   $span.data('duration', current)

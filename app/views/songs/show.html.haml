@@ -21,6 +21,9 @@
         = image_tag @song.waveform_file, class: 'full-width height-50k'
       .song-container.full-width
         = image_tag @song.wave_form_singer, class: 'full-width height-50k'
+      - @lines.each do |line|
+        - line.words.each do |word|
+          %span.duration{ data: { id: word.id } }
       .cursor
     .col-sm-5.relative.height-50k
       - @lines.each do |line|
@@ -31,6 +34,7 @@
               %span= wf.number_field :processed_at, class: 'small-field'
               %span= wf.number_field :duration, class: 'tiny-field'
               %span= wf.number_field :note, class: 'tiny-field'
+              = wf.hidden_field :id
 
 .edit-lyric
   = form_for @song do |f|
