@@ -7,9 +7,9 @@ class PatchUploader
     patch = Patch.find(id)
 
     CSV.open(file_name = "patch_#{patch.version}.csv", "w") do |w|
-      w << %w(name author singer beat_link lyric_link words_link)
+      w << %w(id name author singer beat_link lyric_link words_link)
       patch.songs.each do |song|
-        w << [song.name, song.author, song.singer, song.beat_link, song.lyric_link, song.words_link]
+        w << [song.id, song.name, song.author, song.singer, song.beat_link, song.lyric_link, song.words_link]
       end
     end
 
