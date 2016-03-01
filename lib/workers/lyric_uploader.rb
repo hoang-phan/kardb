@@ -9,9 +9,9 @@ class LyricUploader
     lines = song.lines.includes(:words)
 
     CSV.open(lines_file_name, 'w') do |csv|
-      csv << %w(id position)
+      csv << %w(id position song_id)
       lines.each do |line|
-        csv << [line.id, line.position]
+        csv << [line.id, line.position, id]
       end
     end
 
