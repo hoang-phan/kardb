@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227155859) do
+ActiveRecord::Schema.define(version: 20160301113041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(version: 20160227155859) do
     t.string   "file_name"
     t.string   "lyric"
     t.string   "lyric_link"
-    t.string   "waveform_file"
     t.string   "singer_wav"
     t.string   "wave_form_singer"
     t.string   "words_link"
+    t.string   "waveform_file"
   end
 
   add_index "songs", ["file_name"], name: "index_songs_on_file_name", using: :btree
